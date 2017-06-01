@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AlHudaTimeBasedRefreshModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CourseTypeId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="DefaultTermFee" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="TaxRate" Type="decimal" Precision="5" Scale="3" Nullable="false" />
+          <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DateAdded" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourseStudent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="DateEnrolled" Type="smalldatetime" Nullable="false" />
+          <Property Name="DateUpdated" Type="smalldatetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentNumber" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="DateOfBirth" Type="date" />
+          <Property Name="DateofAdmission" Type="date" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="255" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Province" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="MoodleId" Type="int" />
+          <Property Name="DiscountOrder" Type="int" />
+          <Property Name="FamilyId" Type="int" />
+          <Property Name="FamilyMemberType" Type="int" />
+          <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="uniqueidentifier" />
+          <Property Name="RegistrationDate" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CourseStudent_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="CourseStudent" Type="Self.CourseStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseStudent">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseStudent_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="CourseStudent" Type="Self.CourseStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseStudent">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AlHudaTimeBasedRefreshModelStoreContainer">
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseStudent" EntityType="Self.CourseStudent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CourseStudent_Course" Association="Self.FK_CourseStudent_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="CourseStudent" EntitySet="CourseStudent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseStudent_Student" Association="Self.FK_CourseStudent_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="CourseStudent" EntitySet="CourseStudent" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AlHudaTimeBasedRefreshModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CourseTypeId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="DefaultTermFee" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TaxRate" Type="Decimal" Precision="5" Scale="3" Nullable="false" />
+          <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="Guid" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CourseStudents" Relationship="Self.FK_CourseStudent_Course" FromRole="Course" ToRole="CourseStudent" />
+        </EntityType>
+        <EntityType Name="CourseStudent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="DateEnrolled" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UpdatedBy" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_CourseStudent_Course" FromRole="CourseStudent" ToRole="Course" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_CourseStudent_Student" FromRole="CourseStudent" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentNumber" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="DateofAdmission" Type="DateTime" Precision="0" />
+          <Property Name="Address1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MoodleId" Type="Int32" />
+          <Property Name="DiscountOrder" Type="Int32" />
+          <Property Name="FamilyId" Type="Int32" />
+          <Property Name="FamilyMemberType" Type="Int32" />
+          <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="Guid" />
+          <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CourseStudents" Relationship="Self.FK_CourseStudent_Student" FromRole="Student" ToRole="CourseStudent" />
+        </EntityType>
+        <Association Name="FK_CourseStudent_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="CourseStudent" Type="Self.CourseStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseStudent">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseStudent_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="CourseStudent" Type="Self.CourseStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourseStudent">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AlHudaTimeBasedRefreshEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Courses" EntityType="Self.Course" />
+          <EntitySet Name="CourseStudents" EntityType="Self.CourseStudent" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <AssociationSet Name="FK_CourseStudent_Course" Association="Self.FK_CourseStudent_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="CourseStudent" EntitySet="CourseStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseStudent_Student" Association="Self.FK_CourseStudent_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="CourseStudent" EntitySet="CourseStudents" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AlHudaTimeBasedRefreshModelStoreContainer" CdmEntityContainer="AlHudaTimeBasedRefreshEntities">
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="AlHudaTimeBasedRefreshModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CourseTypeId" ColumnName="CourseTypeId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="DefaultTermFee" ColumnName="DefaultTermFee" />
+                <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseStudents">
+            <EntityTypeMapping TypeName="AlHudaTimeBasedRefreshModel.CourseStudent">
+              <MappingFragment StoreEntitySet="CourseStudent">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="DateEnrolled" ColumnName="DateEnrolled" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="AlHudaTimeBasedRefreshModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StudentNumber" ColumnName="StudentNumber" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="DateofAdmission" ColumnName="DateofAdmission" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="MoodleId" ColumnName="MoodleId" />
+                <ScalarProperty Name="DiscountOrder" ColumnName="DiscountOrder" />
+                <ScalarProperty Name="FamilyId" ColumnName="FamilyId" />
+                <ScalarProperty Name="FamilyMemberType" ColumnName="FamilyMemberType" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
